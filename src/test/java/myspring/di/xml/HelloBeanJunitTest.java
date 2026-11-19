@@ -1,17 +1,27 @@
 package myspring.di.xml;
 
 //assertions 클래스에 밑에 있는 모든 메서드를 import 하겠다.
+
 import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.support.GenericXmlApplicationContext;
 
 public class HelloBeanJunitTest {
 	
+	BeanFactory factory;
+	
+	@BeforeEach
+	void container() {
+		factory = new GenericXmlApplicationContext("classpath:spring-beans.xml");
+		
+	}
+	
 	@Test
 	void hello() {
 		//1. Bean Container 객체생성
-		BeanFactory factory = new GenericXmlApplicationContext("classpath:spring-beans.xml");
 		//2. Hello bean을 Contanier 에게 요청하기
 		Hello helloById = (Hello)factory.getBean("hello");
 		//2-1. hello Bean을 Container 에게 요청하기 Bean의 id와 type을 기준으로 Bean을 요청하기
@@ -30,6 +40,9 @@ public class HelloBeanJunitTest {
 		
 		//3. stringPrinter Bean을 요청하기
 		Printer printer = factory.getBean("strPrinter", Printer.class);
+		
+		assertEquals("Hello 스프링",printer.toString());
+		
 		
 	}
 
