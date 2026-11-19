@@ -19,7 +19,6 @@
 		<property name="printer" ref="strPinter" />
 		
 	</bean>
-	
 
 
 </beans>
