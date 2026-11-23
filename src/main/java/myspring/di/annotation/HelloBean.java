@@ -7,27 +7,32 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-@Component     //@Conponent == <bean></bean>이다. ("helloBean") 이름이 이렇게 나온다.
+
+/*
+ * 전략2 (어노테이션과 XML 같이 사용하는 형식)
+ * Setter Injection - 변수 각각 인젝션 받기
+ * 
+ */
+
+//@Component <=> <bean></bean>
+@Component
 public class HelloBean {
-	//@Value == <property name="name" value="어노테이션"> 이다.
-	@Value("어노테이션")
+	//@Value <=> <property name="name" value="어노테이션" />
+	@Value("${app.setter.name}")
 	String name;
 	
-	//@Autowired == <property name="printer" ref="stringPrinter" />
+	//@Autowired <=> <property name="printer" ref="stringPrinter" />
 	@Autowired
 	@Qualifier("stringPrinter")
 	PrinterBean printer;
+	
+	@Value("#{'${app.namelist}'.split(',')}")
 	List<String> names;
 
 	public HelloBean() {
 		System.out.println(this.getClass().getName() + " 기본생성자 호출됨!");
 	}
 
-	public HelloBean(String name, PrinterBean printer) {
-		System.out.println(this.getClass().getName() + " 오버로딩 생성자 호출됨!");
-		this.name = name;
-		this.printer = printer;
-	}
 
 	public List<String> getNames() {
 		return this.names;
@@ -36,7 +41,6 @@ public class HelloBean {
 	public void setNames(List<String> list) {
 		this.names = list;
 	}
-
 
 	public String sayHello() {
 		return "Hello " + name;
